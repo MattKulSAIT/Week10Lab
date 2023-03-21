@@ -24,12 +24,20 @@ public class AdminFilter implements Filter {
             HttpServletRequest httpRequest = (HttpServletRequest)request;
             HttpSession session = httpRequest.getSession();
             
-            int role = (int)session.getAttribute("role");
+            try{
+                int role = (int)session.getAttribute("role");
             
-            if(role == 2){
-                HttpServletResponse httpResponse = (HttpServletResponse)response;
-                httpResponse.sendRedirect("notes");
-                return;
+            
+                if(role == 2){
+                    HttpServletResponse httpResponse = (HttpServletResponse)response;
+                    httpResponse.sendRedirect("notes");
+                    return;
+                }
+            }
+            catch(NullPointerException e){
+                 HttpServletResponse httpResponse = (HttpServletResponse)response;
+                 httpResponse.sendRedirect("notes");
+                 return;
             }
         
             chain.doFilter(request, response);
